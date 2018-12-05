@@ -1,6 +1,9 @@
+from typing import List
 import re
 
 from collections import Counter
+
+rgx_pattern = "#([0-9]+) @ ([0-9]+),([0-9]+): ([0-9]+)x([0-9]+)"
 
 
 class Claim:
@@ -22,13 +25,11 @@ class Claim:
                 self.coverage.add((x, y))
 
     @staticmethod
-    def read_claims(input_file: str) -> list("Claim"):
+    def read_claims(input_file: str) -> List["Claim"]:
         claims = []
         with open(input_file) as f:
             for line in f:
-                no_spaces = line.replace(" ", "")
-                values = re.sub("[^\\d]", " ", no_spaces).strip().split(" ")
-                curr_claim = Claim(*[int(value) for value in values])
+                curr_claim = Claim(*[int(x) for x in re.match(rgx_pattern, line).groups()])
                 claims.append(curr_claim)
 
         return claims
@@ -64,7 +65,7 @@ def find_non_overlapping(overlap_count: Counter) -> set:
     return non_overlapping_cells
 
 
-def non_overlapping_claims(claims: list("Claim"), non_overlapping_cells) -> list(int):
+def non_overlapping_claims(claims: list("Claim"), non_overlapping_cells) -> List[int]:
     """
     Returns the ids of all claims that have no
     overlap with other claims
