@@ -2,4 +2,3 @@
 
 My solutions for the Advent of Code 2018
 
-Twitter: [@Arthenos](https://twitter.com/Arthenos)
